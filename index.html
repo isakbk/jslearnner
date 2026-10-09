@@ -1,0 +1,135 @@
+<!DOCTYPE html><html lang="ne"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>JavaScript Reference</title>
+<style>
+:root{--bg:#fbf6ec;--fg:#2b1d05;--card:#fff;--ln:#ead9b5;--g1:#92400e;--g2:#b45309;--ac:#2563eb;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#17120a;--fg:#f5ead2;--card:#241b0d;--ln:#4a3715}}
+:root[data-theme="dark"]{--bg:#17120a;--fg:#f5ead2;--card:#241b0d;--ln:#4a3715}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--fg);font:15px/1.5 system-ui,sans-serif;padding:14px 14px 45vh}
+.tabs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;padding-right:44px}
+.tab{border:1px solid var(--ln);background:var(--card);color:var(--fg);padding:7px 14px;border-radius:99px;cursor:pointer;font:inherit;font-size:13px}
+.tab.on{background:var(--g1);color:#fff;border-color:var(--g1)}
+#th{position:absolute;top:calc(10px + env(safe-area-inset-top,0px));right:12px;width:34px;height:34px;border-radius:50%;border:1px solid var(--ln);background:var(--card);cursor:pointer;font-size:16px}
+#q{display:block;margin:14px auto;width:min(420px,100%);padding:9px 14px;border-radius:10px;border:1px solid var(--ln);background:var(--card);color:var(--fg);font:inherit}
+.root{margin:0 auto;width:max-content;max-width:100%;background:var(--g1);color:#fff;padding:10px 22px;border-radius:10px;font-weight:700;font-size:18px}
+.stem{width:2px;height:22px;background:var(--ac);margin:0 auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;border-top:2px solid var(--ac);padding-top:16px}
+.grp{background:var(--card);border:1px solid var(--ln);border-radius:12px;padding:10px}
+.grp h3{margin:0 0 8px;font-size:14px;background:linear-gradient(var(--g2),var(--g1));color:#fff;padding:8px 10px;border-radius:8px}
+.it{display:block;width:100%;text-align:left;margin:5px 0;padding:8px 10px;border-radius:8px;border:1px solid var(--g1);background:var(--g2);color:#fff;font:600 13px ui-monospace,monospace;cursor:pointer}
+.it:hover,.it.on{background:var(--g1)}
+#sh{position:fixed;left:0;right:0;bottom:0;max-height:58vh;overflow:auto;background:#1c1a14;color:#f1ece0;padding:14px 16px calc(14px + env(safe-area-inset-bottom,0px));box-shadow:0 -6px 24px #0006;display:none;border-radius:14px 14px 0 0}
+#sh h4{margin:0 0 6px;color:#fbbf24;font:700 15px ui-monospace,monospace}
+#sh small{display:flex;justify-content:space-between;margin:10px 0 4px;color:#b8ad92;font-size:12px}
+pre{margin:0;background:#0e0c08;padding:10px;border-radius:8px;overflow-x:auto;font:13px/1.45 ui-monospace,monospace;color:#ffe9b0}
+.x{position:absolute;right:12px;top:8px;background:none;border:0;color:#fff;font-size:22px;cursor:pointer}
+.cp{background:none;border:1px solid #fbbf24;color:#fbbf24;border-radius:6px;font-size:11px;cursor:pointer}
+.n{text-align:center;color:#8a7a55;font-size:12px;margin:12px 0}
+</style></head><body>
+<button id="th" title="Light / Dark">🌓</button>
+<div class="tabs" id="tabs"></div>
+<input id="q" placeholder="🔎 Search: fetch, MediaRecorder, axios, Observer …">
+<div id="tree"></div>
+<p class="n">Browser APIs = global (import चाहिँदैन) · Libraries = <b>npm i name</b> पछि import · Click गरेर Syntax / Params / Example हेर्नुस्</p>
+<div id="sh"><button class="x" onclick="this.parentNode.style.display='none'">×</button><h4 id="s1"></h4><div id="s2"></div><small>Path · Syntax · Params</small><pre id="s3"></pre><small>Example <button class="cp" id="cp">Copy</button></small><pre id="s4"></pre></div>
+<script>
+const D=[
+{t:"Basic",r:"🟨 JS · BASIC",g:[
+{n:"1 📦 VARIABLES",i:[
+["let / const","const बदल्न नमिल्ने, let मिल्ने। var avoid गर्ने।","const name = value;\nlet count = 0;","const PI = 3.14;\nlet age = 20;"],
+["Data types","string, number, boolean, null, undefined, object, bigint, symbol।","typeof value","typeof 'hi'  // 'string'\ntypeof []    // 'object'"],
+["=== vs ==","=== type सहित compare — सधैं यही use गर्ने।","a === b","0 == '0'   // true\n0 === '0'  // false"],
+["?. र ??","?. = safe access, ?? = null/undefined भए default।","obj?.key ?? default","user?.address?.city ?? 'N/A'"]]},
+{n:"2 ⚙️ FUNCTIONS",i:[
+["function / arrow","Reusable code block।","function f(a, b) {}\nconst f = (a, b) => a + b;","const add = (a, b) => a + b;"],
+["Default / rest","Default value र बाँकी arguments।","(a = 1, ...rest) => {}","const sum = (...n) =>\n  n.reduce((a, b) => a + b, 0);"],
+["Closure","भित्री function ले बाहिरको variable याद राख्छ।","function outer(){\n  let x; return () => x }","const counter = () => {\n  let c = 0;\n  return () => ++c;\n};"]]},
+{n:"3 📚 ARRAY & OBJECT",i:[
+["map/filter/reduce","Array बदल्ने / छान्ने / एउटै value बनाउने।","arr.map(fn)\narr.filter(fn)\narr.reduce(fn, init)","[1,2,3].map(x => x * 2)\n// [2,4,6]"],
+["find/some/every","पहिलो match / कुनै / सबै match।","arr.find(fn)  arr.some(fn)\narr.every(fn)","users.find(u => u.id === 5)"],
+["Destructuring/Spread","Value निकाल्ने र copy/merge गर्ने।","const {a, b} = obj;\nconst [x, y] = arr;\n{...obj, c: 3}","const {name, age} = user;\nconst copy = [...arr, 4];"],
+["import / export","ES Modules — file बीच code बाँड्ने।","export const x = 1;\nexport default fn;\nimport fn, {x} from './f.js';","import {add} from './math.js';"]]}]},
+{t:"DOM & Events",r:"🟨 JS · DOM & EVENTS",g:[
+{n:"4 🌐 DOM",i:[
+["querySelector","CSS selector ले element ल्याउँछ।","document.querySelector(sel)\ndocument.querySelectorAll(sel)","const btn =\n  document.querySelector('#save');"],
+["createElement","नयाँ element बनाएर थप्छ।","el = document.createElement(tag)\nparent.append(el)","const li = document.createElement('li');\nli.textContent = 'Hi';\nul.append(li);"],
+["classList / dataset","Class toggle र data-* attribute।","el.classList.add|remove|toggle(c)\nel.dataset.key","el.classList.toggle('active');"]]},
+{n:"5 🖱️ EVENTS & STORAGE",i:[
+["addEventListener","Event सुन्छ। Params: type, handler, {once, passive, capture}।","el.addEventListener(\n  type, handler, options)","form.addEventListener('submit', e => {\n  e.preventDefault();\n});"],
+["Event delegation","Parent मा एउटै listener — dynamic element का लागि।","parent.addEventListener('click',\n  e => e.target.closest(sel))","ul.addEventListener('click', e => {\n  const li = e.target.closest('li');\n});"],
+["localStorage","Browser मा स्थायी data। sessionStorage = tab बन्द नभएसम्म।","localStorage.setItem(k, v)\nlocalStorage.getItem(k)\nlocalStorage.removeItem(k)","localStorage.setItem('user',\n  JSON.stringify(u));"],
+["FormData","Form data (file सहित) बटुल्छ।","new FormData(formEl)\nfd.append(key, value)","const fd = new FormData(form);\nfetch('/api', {method:'POST', body: fd});"]]}]},
+{t:"Async & Network",r:"🟨 JS · ASYNC & NETWORK",g:[
+{n:"6 ⏳ ASYNC",i:[
+["Promise","Future मा आउने result। then / catch / finally।","new Promise((resolve, reject) => {})\nPromise.all([p1, p2])","const [a, b] = await Promise.all([\n  fetch('/a'), fetch('/b')]);"],
+["async / await","Promise लाई सजिलो तरिकाले लेख्ने।","async function f() {\n  try { await p } catch (e) {}\n}","const data = await res.json();"],
+["Timers","setTimeout = एक पटक, setInterval = बारम्बार।","setTimeout(fn, ms)\nsetInterval(fn, ms)\nclearTimeout(id)","const id = setInterval(tick, 1000);\nclearInterval(id);"]]},
+{n:"7 📡 NETWORK",i:[
+["fetch","API call। Params: url, {method, headers, body, signal}।","fetch(url, {\n  method, headers, body, signal })","const res = await fetch('/api/posts', {\n  method: 'POST',\n  headers: {\n    'Content-Type': 'application/json',\n    Authorization: `Bearer ${token}` },\n  body: JSON.stringify(data)\n});\nif (!res.ok) throw new Error(res.status);"],
+["AbortController","चलिरहेको fetch रद्द गर्छ (timeout)।","const c = new AbortController();\nfetch(url, {signal: c.signal});\nc.abort();","setTimeout(() => c.abort(), 5000);"],
+["WebSocket","Real-time two-way connection।","new WebSocket(url)\nws.onmessage  ws.send(data)","const ws = new WebSocket('wss://x.com/ws');\nws.onmessage = e => log(e.data);"]]}]},
+{t:"Video · Audio · Media",r:"🟨 JS · MEDIA (VIDEO / AUDIO)",g:[
+{n:"8 🎬 VIDEO / AUDIO ELEMENT",i:[
+["HTMLMediaElement","<video>/<audio> control। Methods: play(), pause(), load()। Props: currentTime, duration, volume (0-1), muted, loop, playbackRate।","v.play()  v.pause()\nv.currentTime = 30\nv.volume = 0.5\nv.playbackRate = 1.5","const v = document.querySelector('video');\nv.muted = true;\nawait v.play();"],
+["Media events","play, pause, ended, timeupdate, loadedmetadata, waiting, error।","v.addEventListener(\n  'timeupdate', () => v.currentTime)","v.addEventListener('ended', next);"],
+["Fullscreen / PiP","Full screen र floating video window।","el.requestFullscreen()\nvideo.requestPictureInPicture()","await v.requestPictureInPicture();"],
+["Video → Canvas","Video frame बाट thumbnail बनाउँछ।","ctx.drawImage(video, 0, 0, w, h)\ncanvas.toBlob(cb, 'image/jpeg', 0.8)","ctx.drawImage(v, 0, 0, 320, 180);\nconst url = canvas.toDataURL();"]]},
+{n:"9 🔊 WEB AUDIO API",i:[
+["AudioContext","Audio processing graph। User click पछि मात्र start हुन्छ।","ctx = new AudioContext()\nsrc = ctx.createMediaElementSource(el)\nsrc.connect(gain).connect(ctx.destination)","const gain = ctx.createGain();\ngain.gain.value = 0.7;"],
+["AnalyserNode","Audio visualizer (frequency data)।","an = ctx.createAnalyser()\nan.fftSize = 256\nan.getByteFrequencyData(arr)","const arr = new Uint8Array(\n  an.frequencyBinCount);"],
+["new Audio()","सानो sound बजाउन — सबैभन्दा सजिलो।","new Audio(src).play()","new Audio('/beep.mp3').play();"],
+["SpeechSynthesis","Text → आवाज (TTS)।","speechSynthesis.speak(\n  new SpeechSynthesisUtterance(text))","const u = new SpeechSynthesisUtterance('Hello');\nu.rate = 1; speechSynthesis.speak(u);"]]},
+{n:"10 🎥 CAPTURE & FILES",i:[
+["getUserMedia","Camera/mic access। Param: constraints {video, audio}।","navigator.mediaDevices\n  .getUserMedia({video, audio})","const s = await navigator.mediaDevices\n  .getUserMedia({\n    video: {width: 1280, facingMode: 'user'},\n    audio: true });\nvideo.srcObject = s;"],
+["MediaRecorder","Stream record गर्छ। Params: stream, {mimeType}।","rec = new MediaRecorder(stream,\n  {mimeType: 'video/webm'})\nrec.start()  rec.stop()","rec.ondataavailable = e => chunks.push(e.data);\nrec.onstop = () =>\n  new Blob(chunks, {type: 'video/webm'});"],
+["Blob / ObjectURL","File को temporary URL (preview)।","URL.createObjectURL(blob|file)\nURL.revokeObjectURL(url)","video.src = URL.createObjectURL(\n  input.files[0]);"],
+["FileReader","File को content पढ्छ।","r = new FileReader()\nr.readAsDataURL(file) | readAsText(file)","r.onload = () => r.result;"]]}]},
+{t:"Advanced Web APIs",r:"🟨 JS · ADVANCED",g:[
+{n:"11 👁️ OBSERVERS",i:[
+["IntersectionObserver","Element screen मा आयो? Lazy-load / infinite scroll। Params: callback, {root, rootMargin, threshold}।","new IntersectionObserver(cb,\n  {threshold: 0.1}).observe(el)","new IntersectionObserver(([e]) => {\n  if (e.isIntersecting) load();\n}).observe(sentinel);"],
+["Resize / Mutation","ResizeObserver = size बदलिँदा, MutationObserver = DOM बदलिँदा।","new ResizeObserver(cb).observe(el)\nnew MutationObserver(cb)\n  .observe(el, {childList: true})","new ResizeObserver(e => fit())\n  .observe(box);"]]},
+{n:"12 🧵 WORKERS & STORAGE",i:[
+["Web Worker","भारी काम अलग thread मा — UI नअड्ने।","w = new Worker('w.js')\nw.postMessage(data)\nw.onmessage = e => e.data","const w = new Worker('w.js');\nw.postMessage(bigData);"],
+["Service Worker","Offline / cache / push (PWA)।","navigator.serviceWorker\n  .register('/sw.js')","navigator.serviceWorker.register('/sw.js');"],
+["IndexedDB","ठूलो data (file/blob सहित)। idb library ले सजिलो।","indexedDB.open(name, version)\nimport {openDB} from 'idb'","const db = await openDB('app', 1);"]]},
+{n:"13 🧰 BROWSER APIs",i:[
+["Clipboard","Copy / paste (HTTPS चाहिन्छ)।","navigator.clipboard.writeText(t)\nnavigator.clipboard.readText()","await navigator.clipboard.writeText(url);"],
+["Geolocation","User को location (permission चाहिन्छ)।","navigator.geolocation\n  .getCurrentPosition(ok, err, opts)","navigator.geolocation.getCurrentPosition(\n  p => p.coords.latitude);"],
+["Notification","Browser notification।","Notification.requestPermission()\nnew Notification(title, {body})","new Notification('Hi', {body: 'Msg'});"],
+["URL / URLSearchParams","URL parse र query string बनाउँछ।","new URL(url)\nnew URLSearchParams(obj)","new URLSearchParams({page: 2})\n  .toString();  // 'page=2'"]]},
+{n:"14 🧠 LANGUAGE",i:[
+["Class","OOP: constructor, extends, #private।","class A extends B {\n  #x;\n  constructor() { super() }\n}","class User {\n  #pw;\n  constructor(n) { this.name = n }\n}"],
+["Generator","Pause / resume हुने function।","function* g() { yield 1 }","const it = g(); it.next();"],
+["Proxy / structuredClone","Proxy = behavior intercept, structuredClone = deep copy।","new Proxy(target, {get, set})\nstructuredClone(obj)","const copy = structuredClone(obj);"]]}]},
+{t:"Libraries (npm)",r:"🟨 JS · LIBRARIES",g:[
+{n:"15 🌍 DATA & UTILS",i:[
+["axios","HTTP client। npm i axios","import axios from 'axios';\naxios.get(url, {params, headers})\naxios.post(url, data, config)","const {data} = await axios.get(\n  '/api/posts', {params: {page: 1}});"],
+["lodash","debounce, throttle, cloneDeep, groupBy। npm i lodash","import {debounce} from 'lodash';\ndebounce(fn, wait)","const s = debounce(search, 300);"],
+["dayjs","हल्का date library। npm i dayjs","import dayjs from 'dayjs';\ndayjs(date).format('YYYY-MM-DD')","dayjs().add(7, 'day').format('DD MMM');"],
+["zod","Data validation। npm i zod","import {z} from 'zod';\nz.object({...}).parse(data)","const S = z.object({\n  email: z.string().email(),\n  age: z.number().min(18) });"],
+["socket.io-client","Real-time chat / notification। npm i socket.io-client","import {io} from 'socket.io-client';\nsocket = io(url, {auth})\nsocket.on(ev, cb)  socket.emit(ev, data)","socket.emit('message', 'hi');"]]},
+{n:"16 🎞️ MEDIA & VISUAL",i:[
+["howler","Audio library: play, loop, volume, sprite। npm i howler","import {Howl} from 'howler';\nnew Howl({src: [...], loop, volume})","const s = new Howl({src: ['a.mp3'],\n  volume: 0.5});\ns.play();"],
+["hls.js","HLS streaming (.m3u8) video। npm i hls.js","import Hls from 'hls.js';\nh = new Hls()\nh.loadSource(url)\nh.attachMedia(video)","if (Hls.isSupported()) {\n  const h = new Hls();\n  h.loadSource(src);\n  h.attachMedia(video);\n}"],
+["gsap","Animation। npm i gsap","import {gsap} from 'gsap';\ngsap.to(target, {x, duration, ease})","gsap.to('.box', {x: 200, duration: 1});"],
+["chart.js","Chart। npm i chart.js","import Chart from 'chart.js/auto';\nnew Chart(ctx, {type, data, options})","new Chart(ctx, {type: 'bar',\n  data: {labels, datasets}});"],
+["three","3D graphics। npm i three","import * as THREE from 'three';\nnew THREE.Scene()\nnew THREE.PerspectiveCamera(fov, aspect, near, far)","const cam = new THREE.PerspectiveCamera(\n  75, w / h, 0.1, 1000);"]]}]}
+];
+let T=0,Q="";const $=s=>document.querySelector(s);let cur="";
+function show(x,b){document.querySelectorAll(".it.on").forEach(e=>e.classList.remove("on"));b.classList.add("on");
+$("#s1").textContent=x[0];$("#s2").textContent=x[1];$("#s3").textContent=x[2];$("#s4").textContent=x[3];cur=x[3];$("#cp").textContent="Copy";$("#sh").style.display="block"}
+$("#cp").onclick=async()=>{try{await navigator.clipboard.writeText(cur);$("#cp").textContent="Copied ✓"}catch(e){$("#cp").textContent="Select & copy"}};
+let dk=matchMedia("(prefers-color-scheme: dark)").matches;
+$("#th").onclick=()=>{dk=!dk;document.documentElement.dataset.theme=dk?"dark":"light"};
+function render(){
+const tabs=$("#tabs");tabs.innerHTML="";
+D.forEach((d,k)=>{const b=document.createElement("button");b.className="tab"+(k==T&&!Q?" on":"");b.textContent=d.t;b.onclick=()=>{T=k;Q="";$("#q").value="";render()};tabs.appendChild(b)});
+const tr=$("#tree");tr.innerHTML="";let gs=D[T].g;
+if(Q){const m=[];D.forEach(t=>t.g.forEach(g=>g.i.forEach(x=>{if((x[0]+" "+x[1]+" "+x[2]).toLowerCase().includes(Q))m.push(x)})));gs=[{n:"🔎 Results ("+m.length+")",i:m}]}
+else tr.innerHTML='<div class="root">'+D[T].r+'</div><div class="stem"></div>';
+const gr=document.createElement("div");gr.className="grid";
+gs.forEach(g=>{const c=document.createElement("div");c.className="grp";const h=document.createElement("h3");h.textContent=g.n;c.appendChild(h);
+g.i.forEach(x=>{const b=document.createElement("button");b.className="it";b.textContent=x[0];b.onclick=()=>show(x,b);c.appendChild(b)});gr.appendChild(c)});
+tr.appendChild(gr)}
+$("#q").oninput=e=>{Q=e.target.value.trim().toLowerCase();render()};
+render();
+</script></body></html>
