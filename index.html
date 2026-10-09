@@ -100,14 +100,43 @@ const D=[
 ["Class","OOP: constructor, extends, #private।","class A extends B {\n  #x;\n  constructor() { super() }\n}","class User {\n  #pw;\n  constructor(n) { this.name = n }\n}"],
 ["Generator","Pause / resume हुने function।","function* g() { yield 1 }","const it = g(); it.next();"],
 ["Proxy / structuredClone","Proxy = behavior intercept, structuredClone = deep copy।","new Proxy(target, {get, set})\nstructuredClone(obj)","const copy = structuredClone(obj);"]]}]},
+{t:"Built-in (Time · Math · String)",r:"🟨 JS · BUILT-IN FUNCTIONS",g:[
+{n:"15 ⏰ DATE & TIME",i:[
+["new Date()","अहिलेको वा दिइएको मिति/समय। Date.now() = timestamp (ms)।","new Date()\nnew Date('2026-10-09')\nnew Date(y, monthIndex, d, h, m, s)\nDate.now()","const now = new Date();\nconst ts = Date.now();"],
+["get / set","getFullYear, getMonth (0-11!), getDate, getDay (0=आइतबार), getHours, getMinutes, getSeconds। set* पनि छ।","d.getFullYear()  d.getMonth()\nd.getDate()  d.getDay()\nd.setDate(n)  d.setHours(h)","const d = new Date();\nd.setDate(d.getDate() + 7);\n// ७ दिन पछि"],
+["Format","Date लाई text बनाउँछ। ISO = UTC, toLocale* = आफ्नो format।","d.toISOString()\nd.toLocaleDateString(locale, opts)\nd.toLocaleTimeString(locale, opts)","d.toLocaleDateString('en-IN', {\n  day: '2-digit', month: 'short',\n  year: 'numeric' });\n// 09 Oct 2026"],
+["Date difference","दुई date को फरक (ms → दिन)।","(b - a) / 86400000","const days = Math.floor(\n  (end - start) / 86400000);"],
+["Timezone","Time zone अनुसार देखाउँछ (Nepal = Asia/Kathmandu)।","d.toLocaleString(locale,\n  {timeZone: 'Asia/Kathmandu'})","new Date().toLocaleString('en-US',\n  {timeZone: 'Asia/Kathmandu'});"],
+["Intl.RelativeTimeFormat","'yesterday', '3 days ago' जस्तो text।","new Intl.RelativeTimeFormat(\n  locale, {numeric: 'auto'})\n  .format(value, unit)","new Intl.RelativeTimeFormat('en',\n  {numeric: 'auto'}).format(-1, 'day');\n// 'yesterday'"],
+["performance.now()","Code कति ms मा चल्यो नाप्ने (high precision)।","performance.now()","const t = performance.now();\nwork();\nconsole.log(performance.now() - t);"]]},
+{n:"16 🔢 MATH & NUMBER",i:[
+["Math","round, floor, ceil, trunc, abs, max, min, pow, sqrt, random, PI।","Math.round(x)  Math.floor(x)\nMath.max(...arr)  Math.min(a, b)\nMath.pow(a, b)  Math.random()","Math.max(...[3, 9, 4]);  // 9\nMath.round(4.6);  // 5"],
+["Random integer","min र max बीचको random number।","Math.floor(Math.random()\n  * (max - min + 1)) + min","const dice = Math.floor(\n  Math.random() * 6) + 1;"],
+["Number conversion","String → number। toFixed(n) = दशमलव सीमित।","parseInt(str, 10)\nparseFloat(str)  Number(str)\nn.toFixed(2)  Number.isNaN(x)","parseInt('42px', 10);  // 42\n(3.14159).toFixed(2);  // '3.14'"],
+["Intl.NumberFormat","Currency / comma format।","new Intl.NumberFormat(locale,\n  {style, currency}).format(n)","new Intl.NumberFormat('en-IN', {\n  style: 'currency', currency: 'INR'\n}).format(200000);\n// ₹2,00,000.00"]]},
+{n:"17 🔤 STRING & REGEX",i:[
+["Search","Text भित्र खोज्छ।","s.includes(t)  s.startsWith(t)\ns.endsWith(t)  s.indexOf(t)","'hello'.includes('ell');  // true"],
+["Transform","trim, toUpperCase, toLowerCase, slice, split, replaceAll।","s.trim()  s.toUpperCase()\ns.slice(start, end)\ns.split(sep)  s.replaceAll(a, b)","'a,b,c'.split(',');  // ['a','b','c']\n'  hi '.trim();  // 'hi'"],
+["padStart / repeat","Text लाई लम्ब्याउँछ (जस्तै 05)।","s.padStart(len, ch)\ns.padEnd(len, ch)  s.repeat(n)","String(5).padStart(2, '0');  // '05'"],
+["RegExp","Pattern match। test = true/false, match = निकाल्ने।","/pattern/flags\nre.test(s)  s.match(re)\ns.replace(re, str)","/^\\d{10}$/.test('9800000000');\n// true (10 digit फोन)"]]},
+{n:"18 📦 JSON · OBJECT · ARRAY",i:[
+["JSON","Object ↔ text। Params: value, replacer, space।","JSON.stringify(value, null, 2)\nJSON.parse(text)","const s = JSON.stringify(user);\nconst u = JSON.parse(s);"],
+["Object methods","keys, values, entries, fromEntries, assign, freeze।","Object.keys(o)  Object.values(o)\nObject.entries(o)\nObject.freeze(o)","Object.entries({a: 1})\n// [['a', 1]]"],
+["sort / slice / flat","sort() ले original बदल्छ! slice() ले copy दिन्छ।","arr.sort((a, b) => a - b)\narr.slice(s, e)  arr.flat()\nArray.from(iter)  arr.at(-1)","[10, 2, 5].sort((a, b) => a - b);\n// [2, 5, 10]"],
+["Set / Map","Set = unique value, Map = key-value (कुनै पनि key)।","new Set(arr)\nnew Map([[k, v]])\nmap.get(k)  map.set(k, v)","const unique = [...new Set(arr)];"]]},
+{n:"19 🛠️ GLOBAL UTILS",i:[
+["console","Debug: log, error, table, time / timeEnd।","console.log(x)  console.table(arr)\nconsole.time(label)\nconsole.timeEnd(label)","console.table(users);"],
+["crypto.randomUUID","Unique ID बनाउँछ।","crypto.randomUUID()","const id = crypto.randomUUID();"],
+["encodeURIComponent","URL मा safe text बनाउँछ।","encodeURIComponent(str)\ndecodeURIComponent(str)","encodeURIComponent('a b&c');\n// 'a%20b%26c'"],
+["btoa / atob","Base64 encode / decode।","btoa(str)  atob(b64)","btoa('hello');  // 'aGVsbG8='"]]}]},
 {t:"Libraries (npm)",r:"🟨 JS · LIBRARIES",g:[
-{n:"15 🌍 DATA & UTILS",i:[
+{n:"20 🌍 DATA & UTILS",i:[
 ["axios","HTTP client। npm i axios","import axios from 'axios';\naxios.get(url, {params, headers})\naxios.post(url, data, config)","const {data} = await axios.get(\n  '/api/posts', {params: {page: 1}});"],
 ["lodash","debounce, throttle, cloneDeep, groupBy। npm i lodash","import {debounce} from 'lodash';\ndebounce(fn, wait)","const s = debounce(search, 300);"],
 ["dayjs","हल्का date library। npm i dayjs","import dayjs from 'dayjs';\ndayjs(date).format('YYYY-MM-DD')","dayjs().add(7, 'day').format('DD MMM');"],
 ["zod","Data validation। npm i zod","import {z} from 'zod';\nz.object({...}).parse(data)","const S = z.object({\n  email: z.string().email(),\n  age: z.number().min(18) });"],
 ["socket.io-client","Real-time chat / notification। npm i socket.io-client","import {io} from 'socket.io-client';\nsocket = io(url, {auth})\nsocket.on(ev, cb)  socket.emit(ev, data)","socket.emit('message', 'hi');"]]},
-{n:"16 🎞️ MEDIA & VISUAL",i:[
+{n:"21 🎞️ MEDIA & VISUAL",i:[
 ["howler","Audio library: play, loop, volume, sprite। npm i howler","import {Howl} from 'howler';\nnew Howl({src: [...], loop, volume})","const s = new Howl({src: ['a.mp3'],\n  volume: 0.5});\ns.play();"],
 ["hls.js","HLS streaming (.m3u8) video। npm i hls.js","import Hls from 'hls.js';\nh = new Hls()\nh.loadSource(url)\nh.attachMedia(video)","if (Hls.isSupported()) {\n  const h = new Hls();\n  h.loadSource(src);\n  h.attachMedia(video);\n}"],
 ["gsap","Animation। npm i gsap","import {gsap} from 'gsap';\ngsap.to(target, {x, duration, ease})","gsap.to('.box', {x: 200, duration: 1});"],
